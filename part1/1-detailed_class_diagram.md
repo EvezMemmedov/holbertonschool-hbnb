@@ -1,21 +1,17 @@
-# 1. Detailed Class Diagram for Business Logic Layer
-
-This diagram shows the main entities of the HBnB application: **User**, **Place**, **Review**, and **Amenity**.  
-Each class includes its key attributes, methods, and relationships with other classes.
-```mermaid
 classDiagram
+    %% --- CLASSES ---
     class User {
         +UUID id
         +String first_name
         +String last_name
         +String email
         +String password
-        +Bolean is_admin
-        +DataTime creadet_at
-        +DataTime updated_at
-        +reagister()
+        +Boolean is_admin
+        +DateTime created_at
+        +DateTime updated_at
+        +register()
         +update_profile()
-        +delete_acount()
+        +delete_account()
     }
 
     class Place {
@@ -55,8 +51,15 @@ classDiagram
         +delete()
     }
 
-    %% Relationships
-    User "1" --> "many" Place : owns >
-    User "1" --> "many" Review : writes >
-    Place "1" --> "many" Review : has >
-    Place "many" --> "many" Amenity : includes >
+    %% --- RELATIONSHIPS (based on your example) ---
+    %% Association: User related to Place (owns)
+    User --> Place : owns >
+
+    %% Association: User related to Review (writes)
+    User --> Review : writes >
+
+    %% Composition: Place contains Reviews (composition)
+    Place *-- Review : has >
+
+    %% Composition: Place contains many Amenities
+    Place *-- Amenity : includes >
