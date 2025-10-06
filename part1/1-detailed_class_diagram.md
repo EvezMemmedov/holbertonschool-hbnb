@@ -1,5 +1,7 @@
+## Class Diagram
+
+```mermaid
 classDiagram
-    %% --- CLASSES ---
     class User {
         +UUID id
         +String first_name
@@ -51,15 +53,7 @@ classDiagram
         +delete()
     }
 
-    %% --- RELATIONSHIPS (based on your example) ---
-    %% Association: User related to Place (owns)
     User --> Place : owns >
-
-    %% Association: User related to Review (writes)
     User --> Review : writes >
-
-    %% Composition: Place contains Reviews (composition)
     Place *-- Review : has >
-
-    %% Composition: Place contains many Amenities
     Place *-- Amenity : includes >
