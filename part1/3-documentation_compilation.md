@@ -21,7 +21,7 @@ The HBnB system follows a **three-layer architecture**:
 
 ```mermaid
 graph TD
-    A[Presentation Layer (API, Views)] --> B[Business Logic Layer (Models, Services)]
-    B --> C[Persistence Layer (Database, Storage Engine)]
+    A[Presentation Layer] --> B[Business Logic Layer]
+    B --> C[Persistence Layer]
     C --> B
     B --> A
