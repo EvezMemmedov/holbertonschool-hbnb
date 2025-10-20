@@ -1,17 +1,25 @@
-#!/usr/bin/python3
-from app.models.base_model import BaseModel
+from .base import BaseModel
 
-
-class Rewiew(BaseModel):
-    def __init__(self, text, user, rating, place):
+class Review(BaseModel):
+    def __init__(self, text, rating, user_id, place_id):
         super().__init__()
-
-        if not text:
-            raise ValueError("Text is required.")
-        if not (1 <= rating <= 5):
-            raise ValueError("Rating must be between 1 and 5.")
-        
         self.text = text
-        self.user = user
         self.rating = rating
-        self.place = place
+        self.user_id = user_id
+        self.place_id = place_id
+    @property
+    def rating(self):
+        return self._rating
+    @rating.setter
+    def rating(self, value):
+        if not (1 <= value <= 5):
+            raise ValueError("Review.rating must be between 1 and 5 (inclusive)")
+        self._rating = value
+    @property
+    def text(self):
+        return self._text
+    @text.setter
+    def text(self, value):
+        if len(value) == 0:
+            raise ValueError("Review.text cannot be empty")
+        self._text = value

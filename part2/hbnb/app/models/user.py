@@ -1,26 +1,55 @@
-#!/usr/bin/python3
-from datetime import datetime
-from app.models.base_model import BaseModel
+from .base import BaseModel
 import re
 
+def is_valid_email(email):
+    pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    return re.match(pattern, email) is not None
 
 class User(BaseModel):
-    def __init__(self, first_name, last_name, email, is_admin=False):
+    def __init__(self, email, first_name, last_name, password="", isAdmin=False):
         super().__init__()
-
-        if not first_name or len(first_name) > 50:
-            raise ValueError("First name is required and must be <= 50 characters.")
-        if not last_name or len(last_name) > 50:
-            raise ValueError("Last name is required and must be <= 50 characters.")
-        if not self._validate_email(email):
-            raise ValueError("Invalid email format.")
-
-        self.first_name = first_name
-        self.last_name =  last_name
         self.email = email
-        self.is_admin = is_admin
-
-    def _validate_email(self, email):
-        """Validate email format using regex."""
-        pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
-        return re.match(pattern, email) is not None
+        self.password = password
+        self.isAdmin = isAdmin
+        self.first_name = first_name
+        self.last_name = last_name
+        self.places = []
+        self.reviews = []
+    @property
+    def first_name(self):
+        return self._first_name
+    @first_name.setter
+    def first_name(self, value):
+        if len(value) == 0:
+            raise ValueError("User.first_name cannot be empty")
+        self._first_name = value
+    @property
+    def last_name(self):
+        return self._last_name
+    @last_name.setter
+    def last_name(self, value):
+        if len(value) == 0:
+            raise ValueError("User.last_name cannot be empty")
+        self._last_name = value
+    @property
+    def email(self):
+        return self._email
+    @email.setter
+    def email(self, value):
+        if len(value) == 0:
+            raise ValueError("User.email cannot be empty")
+        if not is_valid_email(value):
+            raise ValueError("User.email should be valid email")
+        self._email = value
+    def addPlace(self, place):
+        self.places.append(place.id)
+        self.save()
+    def addReview(self, review):
+        self.reviews.append(review.id)
+        self.save()
+    def removePlace(self, place):
+        self.places.remove(place.id)
+        self.save()
+    def removeReview(self, review):
+        self.reviews.remove(review.id)
+        self.save()

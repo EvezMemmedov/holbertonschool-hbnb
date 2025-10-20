@@ -1,20 +1,8 @@
-#!/usr/bin/python3
-from app.models.base_model import BaseModel
-
+from .base import BaseModel
 
 class Place(BaseModel):
-    def __init__(self, title, description, price, latitude, longitude, owner):
+    def __init__(self, title, price, latitude, longitude, owner_id, description=""):
         super().__init__()
-
-        if not title or len(title) > 100:
-            raise ValueError("Title is required and must be <= 100 characters.")
-        if price < 0:
-            raise ValueError("Prise must be a positive number.")
-        if not (-90.0 <= latitude <= 90.0):
-            raise ValueError("Latitude must be betwen -90.0 and 90.0.")
-        if not (-180.0 <= longitude <= 180.0):
-            raise ValueError("Longitude must be between -180.0 and 180.0.")
-
         self.title = title
         self.description = description
         self.price = price
@@ -25,43 +13,50 @@ class Place(BaseModel):
         self.amenities = []
 
     @property
+    def title(self):
+        return self._title
+    @title.setter
+    def title(self, value):
+        if len(value) == 0:
+            raise ValueError("Place.title cannot be empty")
+        self._title = value
+
+    @property
     def price(self):
         return self._price
     @price.setter
     def price(self, value):
-        if value < 0:
-            raise ValueError("Price must be a non-negative number.")
+        if (value < 0):
+            raise ValueError("Place.price must be non-negative")
         self._price = value
+
     @property
     def latitude(self):
         return self._latitude
     @latitude.setter
     def latitude(self, value):
-        if not (-90.0 <= value <= 90.0):
-            raise ValueError("Latitude must be between -90.0 and 90.0.")
+        if (abs(value) > 90):
+            raise ValueError("Place.latitude must be -90<=l<=90")
         self._latitude = value
+
     @property
     def longitude(self):
         return self._longitude
     @longitude.setter
     def longitude(self, value):
-        if not (-180.0 <= value <= 180.0):
-            raise ValueError("Longitude must be between -180.0 and 180.0.")
+        if (abs(value) > 180):
+            raise ValueError("Price longitude must be -180<=l<=180")
         self._longitude = value
-    def add_review(self, review):
-        self.reviews.append(review)
 
-    def add_amenity(self, amenity):
-        self.amenities.append(amenity)
-
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "title": self.title,
-            "description": self.description,
-            "price": self.price,
-            "latitude": self.latitude,
-            "longitude": self.longitude,
-            "owner_id": self.owner_id,
-            "amenities": self.amenities,
-        }
+    def addAmenity(self, amenity):
+        self.amenities.append(amenity.id)
+        self.save()
+    def addReview(self, review):
+        self.reviews.append(review.id)
+        self.save()
+    def removeAmenity(self, amenity):
+        self.amenities.remove(amenity.id)
+        self.save()
+    def removeReview(self, review):
+        self.reviews.remove(review.id)
+        self.save()
