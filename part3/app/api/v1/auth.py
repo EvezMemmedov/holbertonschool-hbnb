@@ -9,10 +9,19 @@ login_model = api.model('Login', {
     'email': fields.String(required=True, description='User email'),
     'password': fields.String(required=True, description='User password')
 })
+error = api.model('Error', {
+    'error': fields.String(required=True, description='Error description')
+})
+access_token_model = api.model('Access Token', {
+    'access_token': fields.String(required=True, description='Access token')
+})
 
 @api.route('/login')
 class Login(Resource):
-    @api.expect(login_model)
+    @api.expect(login_model, validate=True)
+    @api.response(401, 'Invalid credentials', error)
+    @api.response(200, 'Access token created', access_token_model)
+    @api.response(400, 'Invalid input data', error)
     def post(self):
         """Authenticate user and return a JWT token"""
         credentials = api.payload  # Get the email and password from the request payload
