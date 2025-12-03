@@ -7,28 +7,28 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <img class="logo" src="images/logo.png">
-        <nav>
-            <a href="index.html" id="index-link" class="index-button">Home</a>
-            <a href="login.html" id="login-link" class="login-button">Login</a>
-        </nav>
-    </header>
-    <main>
-        <form id="login-form">
-            <h2>Login</h2>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            
-            <button type="submit">Login</button>
-        </form>
-    </main>
-    <footer>
-        <p>all rights reserved.</p>
-    </footer>
-    <script src="scripts.js"></script>
+<header>
+    <img src="images/logo.png" class="logo" alt="Logo">
+    <nav>
+        <a href="index.html">Home</a>
+    </nav>
+</header>
+<main>
+    <form id="login-form">
+        <h2>Login</h2>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        
+        <button type="submit">Login</button>
+    </form>
+    <p id="error-msg" class="error"></p>
+</main>
+<footer>
+    <p>All rights reserved.</p>
+</footer>
+<script src="scripts.js"></script>
 </body>
 </html>
